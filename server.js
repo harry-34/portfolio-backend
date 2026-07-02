@@ -1,6 +1,8 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
+const OpenAI = require("openai");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
@@ -8,6 +10,9 @@ app.use(express.json());
 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 let bookingsCollection;
 
