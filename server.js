@@ -61,6 +61,47 @@ app.get('/bookings', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.post("/chat", async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    if (!message) {
+      return res.status(400).json({
+        error: "Message is required"
+      });
+    }
+
+    const response = await openai.responses.create({
+      model: "gpt-5",
+      instructions: `
+You are Harsh's AI Assistant.
+
+- You are a friendly female AI assistant.
+- Always speak in Hindi or Hinglish.
+- On the first message say:
+"🙏 Namaste! Main Harsh ki AI Assistant hoon. Kya main aapka naam jaan sakti hoon?"
+- Harsh is a Full Stack Web Developer and Freelancer.
+- Help users with websites, portfolios, dashboards, web apps and software.
+- If someone wants to work with Harsh, ask about:
+1. Project Type
+2. Budget
+3. Timeline
+- Keep answers short, friendly and professional.
+`,
+      input: message
+    });
+
+    res.json({
+      reply: response.output_text
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
 
 app.get('/', (req, res) => {
   res.send("Backend is running");
