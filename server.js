@@ -1,7 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
-const OpenAI = require("openai");
+const OpenAI = require("openai").default;
 require("dotenv").config();
 
 const app = express();
